@@ -1,0 +1,199 @@
+﻿@model List<ResultTastyApi>
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+
+	@await Component.InvokeAsync("_MenuNavbarComponentsPartial")
+	<br />
+	<br />
+	<!-- food section -->
+	<div class="container-fluid">
+		<div class="row px-xl-5">
+			<div class="col-12">
+				<nav class="breadcrumb bg-light mb-30">
+					<a class="breadcrumb-item text-dark" href="/Default/Index/">Ana Sayfa</a>
+					<a class="breadcrumb-item text-dark" href="/Menu/Index/">Menü</a>
+					<span class="breadcrumb-item active">Sepetiniz</span>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row px-xl-5">
+			<div class="col-lg-12 table-responsive mb-5">
+				<table class="table table-light table-borderless table-hover text-center mb-0">
+					<thead class="thead-dark">
+						<tr>
+							<th>#</th>
+							<th>Ürün Adı</th>
+							<th>Tahmini Süre</th>
+							<th>Tarifi İzle</th>
+						</tr>
+					</thead>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td><img src="@item.thumbnail_url" style="width:50px"height="50px" /></td>
+							<td>@item.Name</td>
+							@{
+								if (item.total_time_minutes==0)
+								{
+									<td>15</td>
+								}
+								else
+								{
+									<td>@item.total_time_minutes</td>
+								}
+							}
+							
+							<td><a href="@item.original_video_url" class="btn btn-warning">Tarifi İzle</a></td>
+						</tr>
+					}
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- end food section -->
+	<!-- footer section -->
+	@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+	@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+	<!-- footer section -->
+	<script>
+		// function confirmDelete(event, basketID) {
+		// 	event.preventDefault(); // Sayfanın yenilenmesini engelle
+
+		// 	Swal.fire({
+		// 		title: "Are you sure?",
+		// 		text: "You won't be able to revert this!",
+		// 		icon: "warning",
+		// 		showCancelButton: true,
+		// 		confirmButtonColor: "#3085d6",
+		// 		cancelButtonColor: "#d33",
+		// 		confirmButtonText: "Yes, delete it!"
+		// 	}).then((result) => {
+		// 		if (result.isConfirmed) {
+		// 			// Silme isteğini AJAX ile gönder
+		// 			$.ajax({
+		// 				url: "/Baskets/DeleteBasket/" + basketID,
+		// 				type: 'POST', // Veya 'DELETE' isteğine göre
+		// 				success: function () {
+		// 					Swal.fire({
+		// 						title: "Deleted!",
+		// 						text: "Your file has been deleted.",
+		// 						icon: "success"
+		// 					}).then(() => {
+		// 						// Başarılı işlemden sonra sayfayı yenileyin veya öğeyi kaldırın
+		// 						location.reload(); // Sayfayı yeniler
+		// 					});
+		// 				},
+		// 				error: function () {
+		// 					Swal.fire({
+		// 						title: "Error!",
+		// 						text: "There was an error deleting the item.",
+		// 						icon: "error"
+		// 					});
+		// 				}
+		// 			});
+		// 		}
+		// 	});
+		// }
+		function confirmDelete(event, basketID) {
+			event.preventDefault(); // Sayfanın yenilenmesini engelle
+
+			Swal.fire({
+				title: "Seçtiğiniz Ürün Silinecektir!",
+				text: "Bu işlem geri alınamaz",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#28a745",
+				cancelButtonColor: "#dc3545",
+				customClass: {
+					confirmButton: 'btn-confirm',
+					cancelButton: 'btn-cancel'
+				},
+				didOpen: () => {
+					const confirmButton = Swal.getConfirmButton();
+					const cancelButton = Swal.getCancelButton();
+
+					if (confirmButton) {
+						confirmButton.style.border = '2px solid #28a745'; // Yeşil outline
+						confirmButton.style.color = '#28a745'; // Yeşil yazı
+						confirmButton.style.backgroundColor = 'transparent'; // Şeffaf arka plan
+						confirmButton.style.transition = 'background-color 0.3s, color 0.3s'; // Geçiş efekti
+
+						// Hover stili ekle
+						confirmButton.addEventListener('mouseover', () => {
+							confirmButton.style.backgroundColor = '#28a745'; // Yeşil arka plan
+							confirmButton.style.color = '#fff'; // Beyaz yazı
+						});
+						confirmButton.addEventListener('mouseout', () => {
+							confirmButton.style.backgroundColor = 'transparent'; // Şeffaf arka plan
+							confirmButton.style.color = '#28a745'; // Yeşil yazı
+						});
+					}
+
+					if (cancelButton) {
+						cancelButton.style.border = '2px solid #dc3545'; // Kırmızı outline
+						cancelButton.style.color = '#dc3545'; // Kırmızı yazı
+						cancelButton.style.backgroundColor = 'transparent'; // Şeffaf arka plan
+						cancelButton.style.transition = 'background-color 0.3s, color 0.3s'; // Geçiş efekti
+
+						// Hover stili ekle
+						cancelButton.addEventListener('mouseover', () => {
+							cancelButton.style.backgroundColor = '#dc3545'; // Kırmızı arka plan
+							cancelButton.style.color = '#fff'; // Beyaz yazı
+						});
+						cancelButton.addEventListener('mouseout', () => {
+							cancelButton.style.backgroundColor = 'transparent'; // Şeffaf arka plan
+							cancelButton.style.color = '#dc3545'; // Kırmızı yazı
+						});
+					}
+				},
+				confirmButtonText: "Ürünü Sil",
+				cancelButtonText:"Vazgeç"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// Silme isteğini AJAX ile gönder
+					$.ajax({
+						url: "/Baskets/DeleteBasket/" + basketID,
+						type: 'POST', // Veya 'DELETE' isteğine göre
+						success: function () {
+							Swal.fire({
+								title: "Ürün Başarılı Bir Şekilde Silindi!",
+								// text: "Your file has been deleted.",
+								icon: "success",
+								showConfirmButton: false, // OK butonunu kaldırır
+								timer: 1200 // 1 saniye (1000 milisaniye) boyunca gösterir
+							}).then(() => {
+								// 1 saniye sonra sayfayı yenile
+								location.reload(); // Sayfayı yeniler
+							});
+						},
+						error: function () {
+							Swal.fire({
+								title: "Opsss!",
+								text: "Silme İşlemi Sırasında Bir Hata Oluştu",
+								icon: "error"
+							});
+						}
+					});
+				}
+			});
+		}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
+
+

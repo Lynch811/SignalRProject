@@ -1,0 +1,50 @@
+﻿@model List<ResultAboutDto>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+
+	@await Component.InvokeAsync("_MenuNavbarComponentsPartial")
+	<!-- food section -->
+    <section class="about_section layout_padding">
+        <div class="container  ">
+
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                <div class="col-md-6 ">
+                    <div class="img-box">
+                        <img src="@item.ImageUrl" alt="">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="heading_container">
+                            <h2>
+                                @item.Title
+                            </h2>
+                        </div>
+                        <p>
+                            @item.Description
+                        </p>
+                    </div>
+                 </div>
+                }
+            </div>
+        </div>
+    </section>
+	<!-- end food section -->
+	<!-- footer section -->
+	@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+	@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+	<!-- footer section -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

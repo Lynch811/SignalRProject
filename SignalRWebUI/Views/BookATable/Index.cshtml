@@ -1,0 +1,186 @@
+﻿@model CreateBookingDto
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+    @await Component.InvokeAsync("_MenuNavbarComponentsPartial")
+
+  <!-- book section -->
+  <section class="book_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Rezervasyon Oluşturun
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <form id="bookingForm" method="post" action="/BookATable/Index/">
+              <div>
+              <input type="text" class="form-control" placeholder="Adınız Soyadınız" asp-for="Name"/>
+              <span asp-validation-for="Name" class="text-danger"></span>
+              </div>
+              <div>
+              <input type="text" class="form-control" placeholder="Telefon Numaranız" asp-for="Phone" id="phone" required maxlength="15" />
+              <span asp-validation-for="Phone" class="text-danger"></span>
+              </div>
+              <div>
+              <input type="email" class="form-control" placeholder="Mail Adresiniz" asp-for="Mail" id="mail" required />
+              <span asp-validation-for="Mail" class="text-danger"></span>
+              </div>
+              @* --------------------------------------------------------------------------------------- *@
+              <div>
+                <select asp-for="PersonCount" class="form-control nice-select wide">
+                  <option value="" disabled selected>
+                    Kaç Kişisiniz?
+                  </option>
+                  <option value="1">
+                    1
+                  </option>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="4">
+                    4
+                  </option>
+                  <option value="5">
+                    5
+                  </option>
+                  <option value="6">
+                    6+
+                  </option>
+                </select>
+                  <span asp-validation-for="PersonCount" class="text-danger"></span>
+              </div>
+              @* --------------------------------------------------------------------------------------- *@
+              <div>
+                <input type="date" class="form-control"asp-for="Date">
+                <span asp-validation-for="Date" class="text-danger"></span>
+              </div>
+              <div class="btn_box">
+                <button type="submit">
+                  Yerinizi Ayırtın
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+                <div class="col-md-6">
+                    <div class="map_container ">
+                        <iframe src="@ViewBag.location" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+      </div>
+    </div>
+  </section>
+  <!-- end book section -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+        document.getElementById('phone').addEventListener('input', function (event) {
+            let input = event.target.value.replace(/\D/g, ''); // sadece rakamları al
+            let formattedInput = '';
+
+            if (input.length > 0) {
+                formattedInput += '0-';
+            }
+            if (input.length > 3) {
+                formattedInput += input.substring(1, 4) + '-';
+            } else {
+                formattedInput += input.substring(1);
+            }
+            if (input.length > 6) {
+                formattedInput += input.substring(4, 7) + '-';
+            } else {
+                formattedInput += input.substring(4);
+            }
+            if (input.length > 8) {
+                formattedInput += input.substring(7, 9) + '-';
+            } else {
+                formattedInput += input.substring(7);
+            }
+            if (input.length > 10) {
+                formattedInput += input.substring(9, 11);
+            } else {
+                formattedInput += input.substring(9);
+            }
+            // Kısıtlamaları uygulama: Maksimum 11 karakter (0-111-111-11-11 formatı için)
+            if (formattedInput.length > 15) {
+                formattedInput = formattedInput.slice(0, 12);
+            }
+            event.target.value = formattedInput;
+        });
+
+  </script>
+  <script>
+document.querySelector("form").addEventListener("submit", function(event) {
+    // var mailInput = document.getElementById("mail").value;
+            let phoneInput = document.getElementById('phone').value;
+            // Telefon numarasını formatlayın ve doğrulayın
+            let phonePattern = /^0-\d{3}-\d{3}-\d{2}-\d{2}$/;
+            if (!phonePattern.test(phoneInput)) {
+                event.preventDefault();
+                alert("Lütfen telefon numaranızı <strong>0-555-555-55-55</strong> formatında giriniz.");
+                return;
+            }
+            // // Mail adresi doğrulama
+            // if (!isValidEmail(mailInput)) {
+            //     event.preventDefault();
+            //     alert("Lütfen geçerli bir mail adresi giriniz.");
+            //     return;
+            // }
+});
+function isValidEmail(email) {
+    var emailPattern = new RegExp("^[a-zA-ZçÇğĞüÜşŞöÖıİ0-9._%+-]+[a-zA-ZçÇğĞüÜşŞöÖıİ0-9.-]+\\.[a-zA-ZçÇğĞüÜşŞöÖıİ]{2,}$");
+    return emailPattern.test(email);
+}
+</script>
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Formun varsayılan gönderim davranışını engelle
+            var form = this;
+
+            // API çağrısını yapın
+            var response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Rezervasyon başarılı!",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    form.submit(); // Alert kapandıktan sonra formu gönderin
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Rezervasyon sırasında bir hata oluştu.',
+                });
+            }
+        });
+    </script>
+    
+  <!-- footer section -->
+    @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+    @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+  <!-- footer section -->
+
+
+</body>
+
+</html>

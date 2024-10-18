@@ -1,0 +1,62 @@
+﻿@model UserEditDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+
+
+
+	<div class="app-wrapper">
+		
+		<main class="app-main">
+			<div class="d-flex justify-content-center mt-5">
+				<div class="col-md-11">
+					<!--begin::Quick Example-->
+					<div class="card card-info card-outline mb-4  ">
+						<!--begin::Header-->
+						<div class="card-header">
+							<div class="card-title">Kullanıcı Bilgilerim</div>
+						</div> <!--end::Header--> <!--begin::Form-->
+						<form>
+							<!--begin::Body-->
+							<div class="card-body">
+								<div class="mb-3">
+								<label for="Name" class="form-label">Ad</label>
+								<input type="text" class="form-control" asp-for="Name" id="Name">
+								</div>
+								<div class="mb-3">
+								<label for="Surname" class="form-label">Soyad</label>
+								<input type="text" class="form-control" asp-for="Surname" id="Surname">
+								</div>
+								<div class="mb-3">
+								<label for="Username" class="form-label">Kullanıcı Adı</label>
+								<input type="text" class="form-control" asp-for="Username" id="Username">
+								</div>
+								<div class="mb-3">
+								<label for="Mail" class="form-label">Mail Adresi</label>
+								<input type="email" class="form-control" asp-for="Mail" id="Mail">
+								</div>
+								<div class="mb-3">
+								<label for="Password" class="form-label">Şifreniz</label>
+								<input type="password" class="form-control" asp-for="Password" id="Password">
+								</div>
+								<div class="mb-3">
+								<label for="ConfirmPassword" class="form-label">Şifrenizi Onaylayın</label>
+								<input type="password" class="form-control" asp-for="ConfirmPassword" id="ConfirmPassword">
+								</div>
+							</div> <!--end::Body--> <!--begin::Footer-->
+							<div class="card-footer"> <button type="submit" class="btn btn-info">Bilgileri Güncelle</button> </div> <!--end::Footer-->
+						</form> <!--end::Form-->
+					</div> <!--end::Quick Example--> <!--begin::Input Group-->
+				</div>
+			</div>
+
+		</main>
+	</div>
+
+
+
+
+
+

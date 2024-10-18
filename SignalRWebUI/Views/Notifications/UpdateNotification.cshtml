@@ -1,0 +1,59 @@
+﻿@model UpdateNotificationDto
+@{
+    ViewData["Title"] = "UpdateNotification";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+	<div class="container-fluid">
+		<h4 class="page-title">Bildirim İşlemleri</h4>
+		<div class="row">
+			<div class="col-md-12">
+				<form method="post">
+					<div class="card">
+						<input type="hidden" asp-for="NotificationID"/>
+						<div class="card-header">
+							<div class="card-title">Yeni Bildirim Girişi</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="categoryname">Bildirim Türü</label>
+								<select class="form-control" asp-for="Type" id="notificationType">
+									<option value="notif-icon notif-primary">Mavi Arka Plan</option>
+									<option value="notif-icon notif-info">Açık Mavi Arka Plan</option>
+									<option value="notif-icon notif-success">Yeşil Arka Plan</option>
+									<option value="notif-icon notif-warning">Turuncu Arka Plan</option>
+									<option value="notif-icon notif-danger">Kırmızı Arka Plan</option>
+									<option value="notif-icon notif-default">Gri Arka Plan</option>
+									<!-- Diğer ikonlar eklenebilir -->
+								</select>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="categoryname">Bildirim İkonu</label>
+								<select class="form-control" asp-for="Icon" id="notificationIcon">
+									<option value="la la-bell">Zil</option>
+									<option value="la la-comment">Mesaj</option>
+									<option value="la la-calendar-o">Rezervasyon</option>
+									<option value="la la-user-plus">Kullanıcı Kayıt</option>
+									<!-- Diğer ikonlar eklenebilir -->
+								</select>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="categoryname">Açıklama</label>
+								<input type="text" class="form-control" asp-for="Description" id="categoryname">
+							</div>
+						</div>
+						<div class="card-action">
+							<button class="btn btn-outline-primary">Bildirimi Güncelle</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

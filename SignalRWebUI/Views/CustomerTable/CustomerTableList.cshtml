@@ -1,0 +1,208 @@
+﻿@model List<ResultRestaurantTableDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+    string color = "";
+    string status = "";
+}
+<!DOCTYPE html>
+<html>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+    }
+
+    .widgettrue, .widgetfalse {
+        width: 220px;
+        height: 120px;
+        border-radius: 15px;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        cursor: pointer;
+    }
+
+    .widgettrue {
+        background: linear-gradient(135deg, #27ae60, #2ecc71); /* Yeşil */
+    }
+
+    .widgetfalse {
+        background: linear-gradient(135deg, #e74c3c, #c0392b); /* Kırmızı */
+    }
+
+    .widgettrue:hover {
+        background: linear-gradient(135deg, #229954, #27ae60); /* Hover için daha koyu yeşil */
+    }
+
+    .widgetfalse:hover {
+        background: linear-gradient(135deg, #c0392b, #e74c3c); /* Hover için daha koyu kırmızı */
+    }
+
+    .widgettrue:hover, .widgetfalse:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+
+    .widget-icon {
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+/*         .widget-icon i {
+            
+            color: #2ecc71;
+        } */
+
+            .widget-icon i.green {
+            color: #e74c3c; /* Yeşil */
+                font-size: 28px;
+            }
+
+            .widget-icon i.red {
+            color: #2ecc71;
+                /* Kırmızı */
+                font-size: 28px;
+            }
+
+    .widget-text {
+        margin-left: 15px;
+    }
+
+        .widget-text h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .widget-text p {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+        }
+
+    /* Breadcrumb Container */
+    .custom-breadcrumb {
+        background-color: #e0e0e0; /* Daha belirgin, koyu gri arka plan rengi */
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Daha koyu gölge efekti */
+    }
+
+        /* Breadcrumb Link Styles */
+        .custom-breadcrumb a {
+            text-decoration: none;
+            color: #2c3e50; /* Koyu mavi */
+            font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+            .custom-breadcrumb a:hover {
+                color: #27ae60; /* Yeşil renk hover */
+                text-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+            }
+
+        /* Active Breadcrumb Item */
+        .custom-breadcrumb .breadcrumb-item.active {
+            color: #e74c3c; /* Kırmızı renk aktif öğe */
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+
+        /* Separator Styling */
+        .custom-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+            content: '>';
+            margin-right: 8px;
+            color: #7f8c8d; /* Daha koyu gri separator */
+            font-weight: bold;
+        }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+
+
+<body class="sub_page">
+
+
+	@await Component.InvokeAsync("_MenuNavbarComponentsPartial")
+	<br />
+	<br />
+	<!-- food section -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb custom-breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item" href="/Default/Index/">Ana Sayfa</a>
+                    <a class="breadcrumb-item" href="/CustomerTable/CustomerTableList/">Masa Listesi</a>
+                    <span class="breadcrumb-item active">Masa Seçimi Yapınız</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+            @foreach (var item in Model)
+            {
+                if (item.Status==false)
+                {
+                    color = "widgettrue";
+                    status = "Masa Boş";
+                }
+                if (item.Status == true)
+                {
+                    color = "widgetfalse";
+                    status = "Masa Dolu";
+                }
+
+                <div class="col-md-3 mb-4">
+                <div class="@color">
+                    @if (item.Status==true)
+                        {
+                            <div class="widget-icon">
+                                 <i class="fas fa-chair @(item.Status ? "green" : "red")"></i>  <!-- Masa ikonu -->
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="widget-icon">
+                                <a href="/Menu/Index/@item.RestaurantTableID"> <i class="fas fa-chair @(item.Status ? "green" : "red")"></i> </a>  <!-- Masa ikonu -->
+                            </div>
+                        }
+
+                    <div class="widget-text">
+                        <h3>@item.Name</h3>
+                        <p>@status</p>
+                    </div>
+                </div>
+                </div>
+            }
+
+            </div>
+        </div>
+    
+
+	
+	<!-- end food section -->
+	<!-- footer section -->
+	@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+	@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+	
+</body>
+
+</html>
+
+

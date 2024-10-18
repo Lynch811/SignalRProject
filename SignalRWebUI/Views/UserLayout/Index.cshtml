@@ -1,0 +1,26 @@
+﻿@* UserLayoutSayfasıı *@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @await Component.InvokeAsync("_UserLayoutHeaderComponentPartial")
+</head>
+<body>
+    <div class="app-wrapper">
+        @await Component.InvokeAsync("_UserLayoutNavbarComponentPartial")
+        @await Component.InvokeAsync("_UserLayoutSidebarComponentPartial")
+        <main class="app-main">
+            @RenderBody()
+            @await Component.InvokeAsync("_UserLayoutFooterComponentPartial")
+        </main>
+    </div>
+    </div>
+    </div>
+    @await Component.InvokeAsync("_UserLayoutScriptComponentPartial")
+</body>
+
+</html>
