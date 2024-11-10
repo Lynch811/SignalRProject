@@ -1,23 +1,18 @@
-﻿@model LoginDto
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-	<link href="~/loginpage/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
     <title>Login Page</title>
 </head>
 
 <body>
     <div class="container" id="container">
         <div class="form-container sign-in">
-            <form method="post">
+            <form>
                 <h1>Giriş Yap</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -26,8 +21,8 @@
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>veya email ve şifre ile giriş yap </span>
-                <input type="text" id="Mail" asp-for="Username" placeholder="Kullanıcı Adı">
-                <input type="password" id="Password" asp-for="Password" placeholder="Şifre">
+                <input type="email" placeholder="Mail Adresi">
+                <input type="password" placeholder="Şifre">
                 <a href="#">Şifrenizimi Unuttunuz?</a>
                 <button>Giriş Yap</button>
             </form>
@@ -37,12 +32,12 @@
                 <div class="toggle-panel toggle-right">
                     <h1>Hoş Geldiniz!</h1>
                     <p>Restoranımıza kaydolun ve özel fırsatlarımızdan yararlanın.</p>
-                    <a href="/Register/Index/"> <button class="hidden">Kayıt Ol</button></a>
-
+                    <a href="register.html"> <button class="hidden">Kayıt Ol</button></a>
                 </div>
             </div>
         </div>
 
     </div>
-	<script src="~/loginpage/script.js"></script>
+    <script src="script.js"></script>
+
 </body>

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<h1>QR Kod Oluşturucu</h1>
+<input type="text" id="qrText" placeholder="Metni girin">
+<button onclick="generateQrCode()">QR Kodu Üret</button>
+<br>
+<br>
+<img id="qrCodeImage" alt="QR Kodu Görüntüsü" style="display:none;" />
+
+<script>
+    function generateQrCode() {
+        const text = document.getElementById("qrText").value;
+        const qrCodeImage = document.getElementById("qrCodeImage");
+
+        if (text.trim() === "") {
+            alert("Lütfen bir metin girin!");
+            return;
+        }
+
+        // API URL'sine istek gönder
+        fetch(`https://localhost:44308/api/QrCode/generate?text=${encodeURIComponent(text)}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                qrCodeImage.src = url;
+                qrCodeImage.style.display = "block";
+            })
+            .catch(error => console.error("QR kod oluşturulurken hata:", error));
+    }
+</script>
+

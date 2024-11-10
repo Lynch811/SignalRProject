@@ -17,8 +17,9 @@ namespace SignalRWebUI.Controllers
 		{
 			_httpClientFactory = httpClientFactory;
 		}
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int tableId)
 		{
+			ViewBag.TableId = tableId;
 			HttpClient client =new HttpClient();
 			HttpResponseMessage response = await client.GetAsync("https://localhost:44308/api/Contact");
 			response.EnsureSuccessStatusCode();

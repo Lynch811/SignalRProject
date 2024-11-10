@@ -21,10 +21,13 @@ namespace SignalRWebUI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int tableId)
         {
-			ViewBag.v = id;
-            var client = _httpClientFactory.CreateClient();
+			
+			ViewBag.TableId = tableId;
+			HttpContext.Session.SetInt32("TableId", tableId);
+			TempData["RestaurantTableID"] = tableId;
+			var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:44308/api/Product/ProductListWithCategory");
 			var responseMessage2 = await client.GetAsync("https://localhost:44308/api/Category");
 			if (responseMessage.IsSuccessStatusCode)
@@ -50,15 +53,16 @@ namespace SignalRWebUI.Controllers
 			//
 		}
 		[HttpPost]
-		public async Task<IActionResult> AddBasket(int id,int RestaurantTableID)
+		public async Task<IActionResult> AddBasket(int ProductID,int RestaurantTableID)
 		{
+			
 			if (RestaurantTableID == 0)
 			{
 				return BadRequest("MenuTableId 0 geliyor");
 			}
 			CreateBasketDto createBasketDto = new CreateBasketDto()
 			{
-				ProductID = id,
+				ProductID = ProductID,
 				RestaurantTableID = RestaurantTableID
 			};
             var client = _httpClientFactory.CreateClient();

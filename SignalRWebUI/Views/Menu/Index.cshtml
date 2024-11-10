@@ -2,6 +2,7 @@
 @{
 	Layout = null;
 	var category = ViewData["Category"] as List<ResultCategoryDto>;
+	var tableId = ViewBag.TableId;
 }
 
 <!DOCTYPE html>
@@ -53,9 +54,13 @@
 											<h6>
 												@item.Price₺
 											</h6>
-											<a href="javascript:void(0);" @* onclick="showproductid(@item.ProductID)" *@onclick="showproductid(@item.ProductID,@ViewBag.v)"
+											<a href="javascript:void(0);"
+											   onclick="showproductid(@item.ProductID, @ViewBag.TableId)"
 											   data-product-id="@item.ProductID"
-											   data-product-name="@item.ProductName" @* id="@item.ProductID" *@>
+											   data-product-name="@item.ProductName">
+  
+
+											
 												<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
 												<g>
 												<g>
@@ -119,7 +124,7 @@
 				</div>
 			</div>
 			<div class="btn-box">
-				<a href="/Baskets/Index/">
+				<a href="/Baskets/Index?tableId=@TempData["RestaurantTableID"]">
 					Sepete Git
 				</a>
 			</div>
@@ -130,26 +135,83 @@
 	<!-- footer section -->
 	@await Component.InvokeAsync("_UILayoutFooterComponentPartial")
 	@await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+@* 	console.log("Product ID: " + productID);
+	console.log("Restaurant Table ID: " + restaurantTableID); *@
 	<!-- footer section -->
-
 	<script>
 		function showproductid(productID, restaurantTableID) {
+			var productElement = $(`a[data-product-id="${productID}"]`);
+			var productName = productElement.data('product-name');
+
+			if (!productName) {
+				console.error("Ürün ismi bulunamadı!");
+				Swal.fire({
+					icon: "error",
+					title: "Hata",
+					text: "Ürün ismi bulunamadı!",
+					position: "top-end",
+					showConfirmButton: false,
+					timer: 1500
+				});
+				return;
+			}
+
+			console.log("Product ID: " + productID);
+			console.log("Restaurant Table ID: " + restaurantTableID);
+
 			$.ajax({
-				type: 'post',
-				url: "/Menu/AddBasket/",
-				data: { 
-					id:productID,
-					restaurantTableID:restaurantTableID
-				},
+				type: 'POST',
+				url: "/Menu/AddBasket/?ProductID=" + productID + "&RestaurantTableID="+restaurantTableID,
+				contentType: 'application/json',
+				data: JSON.stringify({
+					ProductID: productID,
+					RestaurantTableID: restaurantTableID // restaurantTableID burada doğrudan parametre olarak alınıyor
+				}),
 				success: function () {
-					swal("Seçilen Ürün ID: " + id, "Seçiminizi yaptınız", "success");
+					Swal.fire({
+						icon: "success",
+						title: "Seçilen Ürün: " + productName,
+						text: "Sepete Başarılı Bir Şekilde Eklendi",
+						position: "top-end",
+						showConfirmButton: false,
+						timer: 1500
+					});
 				},
 				error: function (xhr, status, error) {
 					console.error("Hata:", error);
 					console.log("Yanıt:", xhr.responseText);
+					Swal.fire({
+						icon: "error",
+						title: "Hata",
+						text: "Sepete eklerken bir sorun oluştu",
+						position: "top-end",
+						showConfirmButton: false,
+						timer: 1500
+					});
 				}
 			});
 		}
+		</script>
+
+
+	<script>
+		// function showproductid(productID, restaurantTableID) {
+		// 	$.ajax({
+		// 		type: 'post',
+		// 		url: "/Menu/AddBasket/",
+		// 		data: { 
+		// 			id:productID,
+		// 			restaurantTableID:restaurantTableID
+		// 		},
+		// 		success: function () {
+		// 			swal("Seçilen Ürün ID: " + id, "Seçiminizi yaptınız", "success");
+		// 		},
+		// 		error: function (xhr, status, error) {
+		// 			console.error("Hata:", error);
+		// 			console.log("Yanıt:", xhr.responseText);
+		// 		}
+		// 	});
+		// }
 		//-----------------------
 
 		// function showproductid(value) {
@@ -167,29 +229,7 @@
 		
 
 
-		// function showproductid(value) {
-		// 	// var id = value;
-		// 	var productElement = $(`a[onclick="showproductid(${value})"]`);
-		// 	var productId = productElement.data('product-id');
-		// 	var productName = productElement.data('product-name');
-		// 	$.ajax({
-		// 		type: 'post',
-		// 		data: { item: productId},
-		// 		url: "/Menu/AddBasket/" + productId,
-		// 		contentType: 'json',
-		// 		success: function () {
-		// 			Swal.fire({
-		// 				position: "top-end",
-		// 				icon: "success",
-		// 				title: "Seçilen Ürün: " + productName,
-		// 				text: "Sepete Başarılı Bir Şekilde Eklendi",
-		// 				showConfirmButton: false,
-		// 				timer: 900
-		// 			});
-		// 		}
-		// 	});
-		// }
-
+		
 	</script>
 	@* <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> *@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

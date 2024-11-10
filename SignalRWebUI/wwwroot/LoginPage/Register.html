@@ -1,22 +1,18 @@
-﻿@model RegisterDto
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="~/loginpage/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
     <title>Register Page</title>
 </head>
 
 <body>
     <div class="container active " id="container ">
         <div class="form-container sign-up ">
-            <form method ="post">
+            <form>
                 <h1>Kayıt Ol</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -26,13 +22,13 @@
                 </div>
                 <span>veya kayıt için e-postanızı kullanın</span>
                 <div class="name-surname-container">
-                    <input type="text" placeholder="Adınız" class="half-width" id="Name" asp-for="Name">
-                    <input type="text" placeholder="Soyadınız" class="half-width" id="Surame" asp-for="Surname">
+                    <input type="text" placeholder="Adınız" class="half-width">
+                    <input type="text" placeholder="Soyadınız" class="half-width">
                 </div>
-                <input type="text" placeholder="Kullanıcı Adınız" id="Username" asp-for="Username">
-                <input type="email" placeholder="Mail Adresiniz" id="Mail" asp-for="Mail" required pattern="[^@@]+@@[^@@]+.[a-zA-Z]{2,6}">
-                <input type="password" placeholder="Şifreniz" id="Pasword" asp-for="Password">
-                <button>Kayıt Ol</button>
+                <input type="text" placeholder="Kullanıcı Adınız">
+                <input type="email" placeholder="Mail Adresiniz">
+                <input type="password" placeholder="Şifreniz">
+                <button>Sign Up</button>
             </form>
         </div>
         <div class="toggle-container">
@@ -40,12 +36,12 @@
                 <div class="toggle-panel toggle-left">
                     <h1>Tekrar Hoş Geldiniz!</h1>
                     <p>Hesabınıza giriş yaparak size özel avantajlarından faydalanın.</p>
-                    <a href="/Login/Index/"><button class="hidden">Giriş Yap</button></a>
+                    <a href="login.html"><button class="hidden">Giriş Yap</button></a>
                 </div>
             </div>
         </div>
 
     </div>
-    <script src="~/loginpage/script.js"></script>
+    <script src="script.js"></script>
 
 </body>
